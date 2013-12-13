@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>BadgeContactController</members>
+        <members>BadgeTokenController</members>
+        <members>CredlyFutureWebCalls</members>
+        <members>CredlyJSON2ApexUpdateBadge</members>
+        <members>CredlyJSONCalls</members>
+        <members>CustomBadgeController</members>
+        <members>batchGetCredlyBadges</members>
+        <members>batchSyncBadges</members>
+        <members>batchSyncMemberBadges</members>
+        <members>batchSyncUpdateBadges</members>
+        <members>staticCredlyClass</members>
+        <members>synchBadgesController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Assign_Badges</members>
+        <members>SyncBadges</members>
+        <members>ViewBadges</members>
+        <members>viewBadgeToken</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>automatedBadgesTrigger</members>
+        <members>automatedMemberBadgesTrigger</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>credlyStyles</members>
+        <name>StaticResource</name>
+    </types>
+    <version>28.0</version>
+</Package>

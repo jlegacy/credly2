@@ -1,0 +1,64 @@
+<apex:page controller="BadgeTokenController"> 
+    
+    <head>
+           <link rel="stylesheet" type="text/css" href="{!$Resource.jquerylightnesscss}" />
+            <link rel="stylesheet" type="text/css" href="{!$Resource.credlyStyles}" />
+          <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+          <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+         
+
+        <script>
+              var $j = jQuery.noConflict();
+              $j(document).ready(function() {
+          });
+          
+      
+          function isNumberKey(evt){
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            return !(charCode > 31 && (charCode < 48 || charCode > 57));    
+            }
+            
+          function refreshScreen() {
+              var error = false;
+              
+              if($j('#errorMessages').find('.exceptionText').length != 0)
+              {
+                  error = true;
+              }
+
+              if (error != true) {
+                  setInterval(function() {
+                  this.window.location.href = window.location.href}, 1000);
+              }
+          }
+
+          function startUpload() {
+                     upload();
+                     setInterval(function() {
+                  this.window.location.href = window.location.href}, 3000);
+        </script>
+    </head>
+    
+  <div id="errorMessages"> 
+            <apex:messages id="messages" styleClass="exceptionText"/>
+  </div>
+ 
+ <apex:form id="addForm">
+ 
+   <apex:sectionHeader title="Maintain Badge Token"/>
+    <apex:pageBlock >
+     <apex:pageBlockSection showHeader="false" id="block1">
+      
+       <apex:pageBlockSectionItem >
+          <apex:outputLabel value="Badge Token"/>
+          <apex:inputText styleClass="credlyToken" value="{!token}" id="token"/>
+        </apex:pageBlockSectionItem>
+        </apex:pageBlockSection> 
+        
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!saveToken}" value="Update Token" id="theUpdateButton" reRender="addForm"/>
+            </apex:pageBlockButtons>
+            </apex:pageBlock>
+       
+    </apex:form>
+</apex:page>

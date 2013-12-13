@@ -1,0 +1,214 @@
+      .pbBody h1 {
+        font-size: medium;
+        }
+         .pbBody h2 {
+        font-size: small;
+        font-style: italic;
+		color: green;
+        }
+        .pbBody h3 {
+        font-size: x-small;
+        }
+        .pbBody h1.badgeText
+        {
+        color:navy;
+        }
+   
+   input.description
+   {
+   height:300px;
+   width:400px;
+   }
+   
+      .exceptionText
+        { 
+            font-style:italic;
+            font-size:16px; 
+            font-weight:normal; 
+            text-align:left;
+            color:red;
+        }
+        textArea.shortDescription
+        {
+        height:2em;
+        width:150px;
+        }
+        
+        textArea.longDescription
+        {
+        height:3em;
+         width:150px;
+        }
+        .expirePeriod
+        {
+        width:50em !important;
+        }
+         .expireNumber
+        {
+         width:50em !important;
+        }
+          .expireLabel
+        {
+        margin-left:100px;
+        }
+       
+  
+  input.btn.nextStep{ 
+     background: green;
+     font-weight: bold;
+    }
+    input.btn.backStep{
+    background: lightgray;
+    font-weight: bold;
+    }
+     input.btn.deleteStep{
+    background: yellow;
+    font-weight: bold;
+    }
+    
+    .messi-titlebox.warning{
+    background-color: yellow;
+    }
+    .messi-titlebox{
+    color:gray;
+    }
+   
+      .longInputText{ 
+            width: 200px;
+            height: 100px;
+             }
+             
+              .ruleLabel{ 
+          
+             }
+     
+        
+        .leftColumnDelivery
+        {
+        border-right: 2px solid red;
+        }
+        
+        .clear { clear: both;}
+        .leftColumn { 
+		margin-left: 100px;
+		margin-top: 15px;
+		width: 100px;
+		float: left;
+         }
+         
+           .leftColumn.rules { 
+		margin-left: 25px;
+		margin-top: 15px;
+		width:150px;
+         }
+         
+         
+		.rightColumn 
+		{ 
+		margin-top: 46px;
+		width: 175px;
+		float: right;
+		}
+		
+			.rightColumn.rules
+		{ 
+		margin-top: 46px;
+		width: 175px;
+	 
+		}
+		  .exceptionText
+    {
+      
+      font-style:italic;
+      font-size:16px;
+      
+      font-weight:normal;
+      
+      text-align:left;
+      color:red;
+    }
+    .input
+    {
+      border: 1px solid red;
+    }
+    
+      .operand
+    {
+      width: 50px;
+      border: 1px solid red;
+    }
+    
+    .icon
+    {
+    cursor:pointer;
+   
+    }
+    
+    .ruleFieldsSelect
+    {
+    position:absolute;
+    width: 225px;
+left: 300px;
+margin-top: -3px;
+    }
+    .operandsSelect
+    {
+    position:absolute;
+    width: 100px;
+left: 585px;
+margin-top: -3px;
+    }
+        .inputsSelect
+    {
+    position:absolute;
+    width: 200px;
+   
+left: 750px;
+margin-top: -3px;
+    }
+    
+    .andSelect
+    {
+     position:absolute;
+    width: 200px;
+   
+left: 980px;
+margin-top: -3px;
+    }
+    
+    #badgeBuilder 
+    {
+    position:absolute;
+    top:1px;
+    left:1px;
+    }
+    
+    .spinImage{
+    position: absolute;
+    margin-top: -10px;
+    margin-left: 45px;
+    }
+     .spinMessage{
+    position: absolute;
+    margin-top: -21px;
+    margin-left: 115px;
+    }
+    
+   .print table {
+    width:50% !important;
+    }
+    
+    .credlyToken
+    {
+    width: 565px;
+    }
+    
+    .imgThumbNail{
+    height:75px;
+    width:75px;
+    border-color: white !important;
+    }
+    
+ 
+    
+    

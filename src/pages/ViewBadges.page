@@ -1,0 +1,241 @@
+<apex:page controller="CustomBadgeController"> 
+    
+    <head>
+           <link rel="stylesheet" type="text/css" href="{!$Resource.jquerylightnesscss}" />
+            <link rel="stylesheet" type="text/css" href="{!$Resource.credlyStyles}" />
+          <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+          <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+         
+
+        <script>
+              var $j = jQuery.noConflict();
+              $j(document).ready(function() {
+              
+           /*   var data = "bGVnYWN5QHN0YXJmaXNoZW50ZXJwcmlzZS5uZXQ6YnI1NDlicjU0OQ==";
+             
+        $j.ajax({
+        url: 'https://apistaging.credly.com/v0.2/authenticate',
+        type:'POST',
+        
+        beforeSend: function(xhr) {           
+        alert('before');
+                xhr.setRequestHeader('Authorization', data);
+                    },   
+        success: function() {           
+         alert('success');
+                },
+                finish: function() {           
+         alert('finish');
+                },
+                 error: function() {           
+        alert('error');
+                }
+                
+        }); */
+                
+         
+             $j('#my-badge').hide();
+          
+          });
+          
+          window.addEventListener("message", function(e) {
+    if (e.origin === "https://staging.credly.com" && typeof (data = e.data) === "object") {
+        var myBadge = document.getElementById("my-badge");
+       console.log(data);
+
+        // Copy data from the badge builder iframe into a local object
+        myBadge.imageUrl        = data.image;
+        myBadge.iconInfo        = data.iconMetadata;
+        myBadge.extraParameters = data.packagedData;
+        
+        var img = new Image();
+		img.src = data.image;
+		console.log(img);
+
+        // Remove the badge builder
+        passImageParms(data.image, data.packagedData.iconstub,data.packagedData.icon_id )
+        
+        $j('#my-badge').hide();
+    }
+});
+          
+          function testBadge()
+          {
+          $j('#my-badge').show();
+          }
+          
+          function isNumberKey(evt){
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            return !(charCode > 31 && (charCode < 48 || charCode > 57));    
+            }
+            
+            function setGiveableJS()
+            {
+          
+            setGiveable();
+            return false;
+          
+
+            }
+
+          function refreshScreen() {
+              var error = false;
+              
+              if($j('#errorMessages').find('.exceptionText').length != 0)
+              {
+                  error = true;
+              }
+
+              if (error != true) {
+                  setInterval(function() {
+                  this.window.location.href = window.location.href}, 1000);
+              }
+          }
+
+          function startUpload() {
+                     upload();
+                     setInterval(function() {
+                  this.window.location.href = window.location.href}, 3000);
+              }
+           
+        </script>
+    </head>
+    
+  <div id="errorMessages"> 
+            <apex:messages id="messages" styleClass="exceptionText"/>
+  </div>
+  
+  
+ <apex:iframe id="my-badge" frameborder="0" scrolling="no" width="960" height="540" src="https://staging.credly.com/badge-builder/embed/11"/>      
+ <apex:form id="addForm" enctype="multipart/form-data">
+ 
+   <apex:sectionHeader title="Credly Badges" rendered="{!detailsBlock}"/>
+      <apex:sectionHeader title="Add New Badge" rendered="{!addBlock}"/>
+      
+         
+        <apex:pageBlock mode="edit" rendered="{!detailsBlock}" >
+         <apex:pageBlockSection columns="4" collapsible="false" title="Create new badges or edit existing ones. Additions and changes you make here will be reflected automatically in your Credly account. Click the “Add New Badge” button to create a badge, or select a badge below to review and update its details as needed." /> 
+         </apex:pageBlock>
+         
+          <apex:pageBlock mode="edit" rendered="{!addBlock}">
+         <apex:pageBlockSection columns="4" collapsible="false" title="Add or edit a badge. When you save your badge it will be ready for issuing from within Salesforce, Credly, or other apps that display your created Credly badges." /> 
+         </apex:pageBlock>
+        
+           <apex:actionFunction name="passImageParms" action="{!passBadgeImageParms}" rerender="addForm">
+           <apex:param name="firstParam"  assignTo="{!xbadgeURL}" value="" /> 
+           <apex:param name="secondParam"  assignTo="{!xbadgeName}" value="" />
+           <apex:param name="thirdParam"  assignTo="{!xiconId}" value="" />
+           </apex:actionFunction>
+        
+       <apex:actionFunction name="upload" action="{!upload}" rerender="addForm"> </apex:actionFunction>
+          <apex:actionFunction action="{!dummy}" name="setGiveable" rerender="dummy"> </apex:actionFunction>
+      
+     
+    <apex:pageBlock id="theAddBadge" rendered="{!addBlock}" title="Describe this Badge">
+ 
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!upload}" value="Save"/>
+         <apex:commandButton action="{!closeBadge}" value="Close"/>
+           <apex:commandButton onClick="testBadge();" value="Badge Builder" id="theAddButton" rerender="addForm"/>
+      </apex:pageBlockButtons>
+      
+ 
+      <apex:pageBlockSection showHeader="false" columns="2" id="block1">
+      
+       <apex:pageBlockSectionItem >
+          <apex:outputLabel value="Title"/>
+          <apex:inputText value="{!title}" id="title"/>
+        </apex:pageBlockSectionItem>
+       
+        
+        <apex:pageBlockSectionItem >
+          <apex:outputLabel value="Short Description"/>
+          <apex:inputTextarea styleClass="shortDescription" value="{!short_description}" id="short_description"/>
+        </apex:pageBlockSectionItem>
+        
+       
+        <apex:pageBlockSectionItem >
+          <apex:outputLabel value="Description"/>
+          <apex:inputTextarea styleClass="longDescription" value="{!description}" id="description"/>
+        </apex:pageBlockSectionItem>
+        
+           <apex:pageBlockSectionItem >
+          <apex:outputLabel value="Criteria"/>
+          <apex:inputText value="{!criteria}" id="criteria"/>
+        </apex:pageBlockSectionItem>
+        
+         
+           <apex:pageBlockSectionItem >
+             <apex:outputLabel value="Can this badge be given by others on Credly?"/>
+         <apex:selectList value="{!is_giveable}" multiselect="false" size="1">
+            <apex:selectOptions value="{!giveableTypes}"/> 
+        </apex:selectList>
+
+ </apex:pageBlockSectionItem>
+ <apex:pageBlockSection columns="3">
+          
+          <apex:pageBlockSectionItem dataStyleClass="expireNumber" >
+          <apex:outputLabel styleClass="expireLabel" value="Expiration (optional)"/>
+            <apex:selectList value="{!is_expireNumber}" multiselect="false" size="1">
+            <apex:selectOptions value="{!expireNumbers}"/> 
+            </apex:selectList>
+        </apex:pageBlockSectionItem>
+        
+           <apex:pageBlockSectionItem dataStyleClass="expirePeriod">
+            <apex:selectList value="{!is_expirePeriod}" multiselect="false" size="1">
+            <apex:selectOptions value="{!expirePeriods}"/> 
+            </apex:selectList>
+        </apex:pageBlockSectionItem>
+        
+        </apex:pageBlockSection>
+        
+ 
+
+        <apex:pageBlockSectionItem >
+       <apex:outputLabel value="Linked Badge"/> 
+         <apex:image styleClass="imgThumbNail" value="{!xbadgeURL}"></apex:image>
+         </apex:pageBlockSectionItem> 
+         
+     <!--      <apex:pageBlockSectionItem >
+       <apex:outputLabel value="Upload Badge" for="file"/> 
+         <apex:inputFile value="{!document.body}" filename="{!document.name}" id="fileEvidence"/>
+         </apex:pageBlockSectionItem> -->
+           
+      
+         <apex:pageBlockSectionItem >
+          <apex:outputLabel value="Categories" />
+          <apex:inputText value="{!categories}" id="categories"/> 
+        </apex:pageBlockSectionItem>
+ 
+      </apex:pageBlockSection>
+ 
+    </apex:pageBlock>
+
+        <apex:pageBlock id="detailsBlock" rendered="{!detailsBlock}">
+            <apex:outputPanel id="details">
+                  <apex:pageBlockTable value="{!badges}" var="o">
+                    <apex:column headerValue="Image">
+                          <apex:outputLink value="/{!o.id}"> <apex:outputField value="{!o.image__c}" /></apex:outputLink>
+                    </apex:column>  
+                   <apex:column headerValue="Title">
+                       
+                         <apex:outputLink value="/{!o.id}"> <apex:outputField value="{!o.title__c}" /> </apex:outputLink>
+                    </apex:column>
+                     <apex:column headerValue="Description">
+                        <apex:outputField value="{!o.description__c}" />
+                    </apex:column>
+                   
+                       <apex:column headerValue="ID">
+                        <apex:outputField value="{!o.credlyBadgeId__c}" />
+                         
+                    </apex:column>
+        </apex:pageBlockTable>
+            </apex:outputPanel>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!addBadge}" value="Add" id="theAddButton" reRender="addForm"/>
+                
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+     
+    </apex:form>
+</apex:page>
