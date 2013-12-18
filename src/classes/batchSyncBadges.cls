@@ -4,7 +4,7 @@ global class batchSyncBadges implements
    global final String query;
    
    global Database.QueryLocator start(Database.BatchableContext BC){
-   	  String query = 'select criteria__c, description__c,categories__c, expires_in__c, is_giveable__c, short_description__c,title__c, image__c, document_ID__c, credlyBadgeId__c from badge__c where credlyBadgeId__c = null';
+   	  String query = 'select criteria__c, description__c,categories__c, expires_in__c, is_giveable__c, short_description__c,title__c, image__c, document_ID__c, credlyBadgeId__c, upload_file_id__c from badge__c where credlyBadgeId__c = null';
       return Database.getQueryLocator(query);
    }
    
@@ -50,7 +50,16 @@ global class batchSyncBadges implements
      List<badge__c> badgeList = new List<badge__c>();
     for (badge__c badge : scope) {
     // get the image data
-     	encodedImage = CredlyJSONCalls.getCredlyImage(badge.document_id__c);
+     	
+     	if (badge.upload_file_id__c == null)
+     	{
+     	encodedImage = CredlyJSONCalls.getCredlyImage(badge.document_id__c);	
+     	}
+     	else
+     	{
+     	encodedImage = CredlyJSONCalls.getDocumentBlob(badge.upload_file_id__c);	
+     	}
+     	
         if (encodedImage != null && securityToken != null)
         {
         // Build Credly Badge //
@@ -63,13 +72,12 @@ global class batchSyncBadges implements
        mBadge.put('criteria', badge.criteria__c = (badge.criteria__c == null) ? ' ' : badge.criteria__c); 
        mBadge.put('is_giveable', badge.is_giveable__c = (badge.is_giveable__c == null) ? ' ' : badge.is_giveable__c); 
        mBadge.put('expires_in', String.valueOf(badge.expires_in__c)); 
-        mBadge.put('access_token',securityToken); 
+        mBadge.put('access_token',securityToken);  
         
         createURL = CredlyJSONCalls.createURLString(mBadge);
         
            //post badge to credly
          returnData = CredlyJSONCalls.postCredly(CredlyJSONCalls.getURL()+ 'badges', createURL);
-         system.debug(returnData);
       //   
           //parseResults
          CredlyJSON2ApexErrors obj = CredlyJSON2ApexErrors.parse(returnData);

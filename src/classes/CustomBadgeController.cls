@@ -5,13 +5,13 @@ public with sharing class CustomBadgeController {
     
     public CustomBadgeController () {
      String returnData;
+   
+     renderBadgeBuilder = true;
+     renderUpload = false;
      
      //get security token//
      securityToken = CredlyJSONCalls.authenticate(CredlyJSONCalls.getURL() + 'authenticate');
-    // if (securityToken.compareTo('error') == 0)
-    // {
-    // 	return staticCredlyClass.tokenPage();
-    // }
+  
        addBlock = false;
        showIframe = false;
         detailsBlock = true;
@@ -35,7 +35,8 @@ public with sharing class CustomBadgeController {
         set;
     }
     
-     public String categories {
+     
+       public String categories {
         get;
         set;
     }
@@ -58,9 +59,30 @@ public with sharing class CustomBadgeController {
         set;
     }
     
+    public pageReference setImageAction()
+    {
+    	if (document.body != null)
+    	{
+    		xbadgeURL = 'data:image;base64,' + EncodingUtil.base64Encode(document.body);
+    	}
+    	return null;
+    }
+    
     public pageReference passBadgeImageParms()
     {
         return null;
+    }
+    
+    public pageReference setUploadAction()
+    {
+    		renderBadgeBuilder = (upload_option.compareTo('CR') == 0) ? true : false;
+    	    renderUpload = (upload_option.compareTo('SF') == 0) ? true : false;
+    	   
+    	    document = null;
+    	    xBadgeURL = ' ';
+    	    xbadgeName = ' ';
+    	   
+    	    return null;
     }
     
   
@@ -109,6 +131,13 @@ public with sharing class CustomBadgeController {
         options.add(new SelectOption('false', 'No'));
         return options;
     }
+    
+      public List < SelectOption > getuploadTypes() {
+        List < SelectOption > options = new List < SelectOption > ();
+        options.add(new SelectOption('CR', 'Make badge image with Badge Builder'));
+        options.add(new SelectOption('SF', 'Upload a badge image'));
+        return options;
+    }
     public PageReference incrementCounter() {
         return null;
     }
@@ -146,6 +175,9 @@ public with sharing class CustomBadgeController {
               public Integer expires_in { get; set; }
                   public Boolean addBlock { get; set; }
                    public Boolean detailsBlock{ get; set; }
+                   public String upload_option { get; set; }
+                    public Boolean renderUpload { get; set; }
+                    public Boolean renderBadgeBuilder { get; set; }
               
           
  
@@ -183,22 +215,44 @@ public with sharing class CustomBadgeController {
      return null;
   }
   
-    
+     if (document.body != null) {
+            document.AuthorId = UserInfo.getUserId();
+            document.FolderId = UserInfo.getUserId(); 
+        //    strBody = EncodingUtil.base64Encode(document.body);
+              try {
+            insert document;
+
+        } catch (DMLException e) {
+            ApexPages.addMessage(new ApexPages.message(ApexPages.severity.ERROR, 'Error uploading file'));
+            return null;
+        }
+        }
+  
+  
    try {
         
         badge__c insertUser = new badge__c();
         insertUser.criteria__c = criteria;
         insertUser.description__c = description;
          insertUser.expire_number__c = integer.valueof(is_expireNumber);
-           insertUser.expire_period__c = is_expirePeriod;
-       //    insertUser.credlyBadgeId__c = xiconId;          
+           insertUser.expire_period__c = is_expirePeriod;     
 
           insertUser.is_giveable__c = is_giveable;
          
             insertUser.short_description__c = short_description;
                insertUser.title__c = title;
-             insertUser.document_id__c = xbadgeURL;
-   
+           
+             
+               if (document.body != null)
+                {
+                  insertUser.upload_file_id__c = document.Id;
+                  insertUser.document_id__c = url.getSalesforceBaseUrl().toExternalForm() + '/servlet/servlet.FileDownload?file=' + document.Id;
+                }
+                else
+                {          
+                  insertUser.document_id__c = xbadgeURL;
+                }
+             
        insert insertUser;
           
         } catch (DMLException e) {

@@ -112,7 +112,6 @@ global class batchSyncMemberBadges implements
            //post badge to credly
          returnData = CredlyJSONCalls.postCredly(CredlyJSONCalls.getURL()+ 'member_badges', createURL);
       //   
-      system.debug(returnData);
           //parseResults
          CredlyJSON2ApexErrors obj = CredlyJSON2ApexErrors.parse(returnData);
         if (obj.meta.status.compareTo('OK') == 0)

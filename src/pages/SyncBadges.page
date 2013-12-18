@@ -13,29 +13,7 @@
               
                $j('#spinner').hide();
                  $j('#spinnerMessage').hide();
-              
-           /*   var data = "bGVnYWN5QHN0YXJmaXNoZW50ZXJwcmlzZS5uZXQ6YnI1NDlicjU0OQ==";
-             
-	$j.ajax({
-        url: 'https://apistaging.credly.com/v0.2/authenticate',
-        type:'POST',
-        
-        beforeSend: function(xhr) {           
-        alert('before');
- 		xhr.setRequestHeader('Authorization', data);
-                    },   
-        success: function() {           
-         alert('success');
-                },
-                finish: function() {           
-         alert('finish');
-                },
-                 error: function() {           
-        alert('error');
-                }
-		
-        }); */
-		
+
          
              $j('#my-badge').hide();
           

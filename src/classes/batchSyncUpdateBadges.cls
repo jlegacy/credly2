@@ -4,14 +4,14 @@ global class batchSyncUpdateBadges implements
    global final String query;
    
    global Database.QueryLocator start(Database.BatchableContext BC){
-   	 
-   	  String query = 'select id, credlyBadgeId__c from badge__c';
+   	
+   	  String query = 'select credlyBadgeId_x__c from chg_badge__c';
       return Database.getQueryLocator(query);
    }
    
    global void execute(
                 Database.BatchableContext BC, 
-                List<badge__c> scope){
+                List<chg_badge__c> scope){
     	
                 	updBadges(scope);
    }
@@ -35,28 +35,44 @@ global class batchSyncUpdateBadges implements
        Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
    }
    
-    public void updBadges(List<badge__c> scope)
+    public void updBadges(List<chg_badge__c> scope)
    {
     	
 	 	 String securityToken;
 	 	 String returnData;
 	 	 String idKey;
 	 	 String test;
+	 	 Datetime dt1;
+	 	 Datetime dt2;
 	 	 
  		 securityToken = CredlyJSONCalls.authenticate(CredlyJSONCalls.getURL() + 'authenticate');
  	
         //put all current badges in list for lookup 
        Integer count = 0;
-       for (badge__c badge : scope) {
+       for (chg_badge__c badge : scope) {
         {
-             idKey = badge.credlyBadgeId__c;
+          //get badge
+          
+             idKey = badge.credlyBadgeId_x__c;
              returnData = CredlyJSONCalls.getCredly(CredlyJSONCalls.getURL()+  'badges/' + idKey );
           //parseResults
          	CredlyJSON2ApexErrors obj = CredlyJSON2ApexErrors.parse(returnData);
      		if (obj.meta.status.compareTo('OK') == 0)
      	  	{
      	     CredlyJSON2ApexUpdateBadge obj2 = CredlyJSON2ApexUpdateBadge.parse(returnData);
-        } 
+        	 badge__c getBadge = [select LastModifiedDate from badge__c where credlyBadgeId__c = :badge.credlyBadgeId_x__c];
+        	// Datetime myDate = convertSFdate(getBadge.LastModifiedDate);
+        //	 dt1 = Datetime.parse(getBadge.LastModifiedDate);
+        	 dt1 = Datetime.valueOf(getBadge.LastModifiedDate); 
+        	 dt2 = Datetime.valueOf(staticCredlyClass.convCRDateTime(obj2.data.creator.updated_at));
+        	//  dt2 = dt2.newInstance(obj2.data.creator.updated_at);
+        	 system.debug(dt1);
+        	 system.debug(dt2);
+        	 system.debug(getBadge.LastModifiedDate);
+        	  system.debug(obj2.data.creator.updated_at);
+        	}
+          //update badge
+           
 }
        }
    }

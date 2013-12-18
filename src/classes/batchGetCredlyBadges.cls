@@ -38,6 +38,7 @@ global class batchGetCredlyBadges implements
     public void getBadges(List<member_badge__c> scope)
    {
     	 	 String idKey;
+    	 	 String returnData;
 	 	 Integer value;
 	 	  List < badge__c > currentBadges = [Select lastmodifieddate, credlyBadgeId__c from badge__c];
 	 	  Map<String, Integer> foundHitIds = new Map<String, Integer>(); 
@@ -50,13 +51,19 @@ global class batchGetCredlyBadges implements
              value = (value == null) ? 1 : value + 1;
              foundHitIds.put(idKey,value);
         }
+        
+        if (test.isRunningTest()) { 
+        returnData = '{ "meta": { "status_code": 200, "status": "OK", "message": "", "more_info": null }, "data": [ { "id": 1, "title": "Greeen Award", "short_description": "", "image_url": "https://credlyapp.s3.amazonaws.com/badges/3b3d21d455ba2c91aed060c8c2225542.png", "is_giveable": false, "created_at": "Tue, 04 Dec 2012 23:48:38 -0500", "creator_id": 2, "resources": { "url": "https://apistaging.credly.com/v0.2/badges/1" } } ], "paging": { "page": 1, "per_page": 1, "order_direction": "ASC", "total_results": 858, "resources": { "next": "https://apistaging.credly.com/v0.2/badges?page=2&per_page=1&order_direction=ASC" } } }';	
+        }
+        else
+        {
 	 	
-   String test = CredlyJSONCalls.getCredly(CredlyJSONCalls.getURL()+ 'badges?page=1&per_page=9999&order_direction=ASC' );
-   
+    returnData = CredlyJSONCalls.getCredly(CredlyJSONCalls.getURL()+ 'badges?page=1&per_page=9999&order_direction=ASC' );
+        }
    String description = ' ';
  List<badge__c> credlyBadges = new List<badge__c>();
  
-   Map<String, Object> m = (Map<String, Object>) JSON.deserializeUntyped(test);
+   Map<String, Object> m = (Map<String, Object>) JSON.deserializeUntyped(returnData);
      List<Object> dataItems = (List<Object>)m.get('data');
       Integer counter = 0;
       for (Object item : dataItems) {

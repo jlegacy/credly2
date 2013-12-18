@@ -3,45 +3,25 @@
     <head>
            <link rel="stylesheet" type="text/css" href="{!$Resource.jquerylightnesscss}" />
             <link rel="stylesheet" type="text/css" href="{!$Resource.credlyStyles}" />
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
           <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
           <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-         
+   
 
         <script>
               var $j = jQuery.noConflict();
+
               $j(document).ready(function() {
-              
-           /*   var data = "bGVnYWN5QHN0YXJmaXNoZW50ZXJwcmlzZS5uZXQ6YnI1NDlicjU0OQ==";
-             
-        $j.ajax({
-        url: 'https://apistaging.credly.com/v0.2/authenticate',
-        type:'POST',
-        
-        beforeSend: function(xhr) {           
-        alert('before');
-                xhr.setRequestHeader('Authorization', data);
-                    },   
-        success: function() {           
-         alert('success');
-                },
-                finish: function() {           
-         alert('finish');
-                },
-                 error: function() {           
-        alert('error');
-                }
-                
-        }); */
-                
-         
              $j('#my-badge').hide();
-          
+
+             $j(  "input[id*='autocomplete']" ).autocomplete({
+  				source: []
+				});
           });
           
           window.addEventListener("message", function(e) {
     if (e.origin === "https://staging.credly.com" && typeof (data = e.data) === "object") {
         var myBadge = document.getElementById("my-badge");
-       console.log(data);
 
         // Copy data from the badge builder iframe into a local object
         myBadge.imageUrl        = data.image;
@@ -50,7 +30,6 @@
         
         var img = new Image();
 		img.src = data.image;
-		console.log(img);
 
         // Remove the badge builder
         passImageParms(data.image, data.packagedData.iconstub,data.packagedData.icon_id )
@@ -59,7 +38,7 @@
     }
 });
           
-          function testBadge()
+          function showBadge()
           {
           $j('#my-badge').show();
           }
@@ -71,12 +50,40 @@
             
             function setGiveableJS()
             {
-          
             setGiveable();
             return false;
-          
+            }
+            
+            function getAutoValues()
+            {
+            var search = $j(  "input[id*='autocomplete']" ).val();
+            var titleData;
+            var titles = [];
+        
+            $j.get( "https://apistaging.credly.com/v0.2/badges/categories?query=" + search.trim() + "&page=1&per_page=5&order_direction=ASC", function( data ) {
+  			
+  			titleData = data.data;
+  			$j.each(titleData, function(i, val)
+  			{
+  			titles.push(titleData[i].name);
+  			});
+  			
+  			$j(  "input[id*='autocomplete']" ).autocomplete(
+  				"option", "source",titles);
+		    });
+            
+            }
+            
+             function setUploadOption(){
+        
+			setUploadController();
 
             }
+            
+            function setImagePicture(){
+            setImageController();
+            }
+            
 
           function refreshScreen() {
               var error = false;
@@ -97,15 +104,15 @@
                      setInterval(function() {
                   this.window.location.href = window.location.href}, 3000);
               }
-           
         </script>
     </head>
+    
+  
     
   <div id="errorMessages"> 
             <apex:messages id="messages" styleClass="exceptionText"/>
   </div>
-  
-  
+        
  <apex:iframe id="my-badge" frameborder="0" scrolling="no" width="960" height="540" src="https://staging.credly.com/badge-builder/embed/11"/>      
  <apex:form id="addForm" enctype="multipart/form-data">
  
@@ -120,6 +127,13 @@
           <apex:pageBlock mode="edit" rendered="{!addBlock}">
          <apex:pageBlockSection columns="4" collapsible="false" title="Add or edit a badge. When you save your badge it will be ready for issuing from within Salesforce, Credly, or other apps that display your created Credly badges." /> 
          </apex:pageBlock>
+         
+          <apex:actionFunction name="setUploadController" action="{!setUploadAction}">
+           </apex:actionFunction>
+           
+              <apex:actionFunction name="setImageController" action="{!setImageAction}">
+           </apex:actionFunction>
+          
         
            <apex:actionFunction name="passImageParms" action="{!passBadgeImageParms}" rerender="addForm">
            <apex:param name="firstParam"  assignTo="{!xbadgeURL}" value="" /> 
@@ -136,7 +150,6 @@
       <apex:pageBlockButtons >
         <apex:commandButton action="{!upload}" value="Save"/>
          <apex:commandButton action="{!closeBadge}" value="Close"/>
-           <apex:commandButton onClick="testBadge();" value="Badge Builder" id="theAddButton" rerender="addForm"/>
       </apex:pageBlockButtons>
       
  
@@ -188,26 +201,60 @@
         </apex:pageBlockSectionItem>
         
         </apex:pageBlockSection>
-        
- 
+       
+     <apex:pageBlockSection columns="3">
+   <apex:pageBlockSectionItem >
+             <apex:outputLabel value="Upload Options"/>
+         <apex:selectList onChange="setUploadOption();" value="{!upload_option}" multiselect="false" size="1">
+            <apex:selectOptions value="{!uploadTypes}"/> 
+        </apex:selectList>
+
+ </apex:pageBlockSectionItem>
 
         <apex:pageBlockSectionItem >
-       <apex:outputLabel value="Linked Badge"/> 
          <apex:image styleClass="imgThumbNail" value="{!xbadgeURL}"></apex:image>
          </apex:pageBlockSectionItem> 
+         </apex:pageBlockSection>
          
-     <!--      <apex:pageBlockSectionItem >
-       <apex:outputLabel value="Upload Badge" for="file"/> 
-         <apex:inputFile value="{!document.body}" filename="{!document.name}" id="fileEvidence"/>
-         </apex:pageBlockSectionItem> -->
-           
-      
-         <apex:pageBlockSectionItem >
+           <apex:pageBlockSectionItem >
           <apex:outputLabel value="Categories" />
-          <apex:inputText value="{!categories}" id="categories"/> 
+         <apex:inputText onkeyup="getAutoValues();" value="{!categories}" id="autocomplete"/>
+          
         </apex:pageBlockSectionItem>
+      
+           <apex:pageBlockSection columns="4" rendered="{!renderUpload}">
+        
+           <apex:pageBlockSectionItem rendered="{!renderUpload}">   
+       <apex:outputLabel value="Upload Badge" for="{!document.name}"/> 
+         <apex:inputFile onchange="setImagePicture();" value="{!document.body}" filename="{!document.name}" id="fileEvidence"/>
+         </apex:pageBlockSectionItem>
+          <apex:pageBlockSectionItem >
+           <h2 class="uploadFileTextPosition">{!document.name}</h2>
+         </apex:pageBlockSectionItem>
+         </apex:pageBlockSection>
+         
+        
+        <apex:pageBlockSection columns="3" rendered="{!renderBadgeBuilder}">
+         <apex:pageBlockSectionItem >
+        <apex:outputLabel value="Badge Builder"/>
+        <apex:commandButton onClick="showBadge();" value="Badge Builder" id="theAddButton" rerender="addForm"/>
+         </apex:pageBlockSectionItem>
+     
+      <apex:pageBlockSectionItem rendered="{!renderBadgeBuilder}"> 
+       <h2 class="badgeFileTextPosition">{!xbadgeName}</h2>  
+       </apex:pageBlockSectionItem> 
+       </apex:pageBlockSection>  
+       
+         
  
       </apex:pageBlockSection>
+     
+        <apex:pageBlockSection rendered="{!renderUpload}" >
+        <apex:pageBlockSectionItem >   
+       <apex:outputLabel styleClass="smallBrown" value="**Must be a .jpg, .png, or .gif file under 2MB. For best results, use a square .png file with a transparent background, at least 600x600 pixels."/> 
+         </apex:pageBlockSectionItem>
+         </apex:pageBlockSection>
+       
  
     </apex:pageBlock>
 

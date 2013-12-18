@@ -29,6 +29,7 @@ public with sharing class testAutomatedBadgeTrigger {
 	automatedTriggerClass.lookForHit('test', 'test', 'ct', 'string');
 	automatedTriggerClass.lookForHit('test', 'test', 'not eq', 'string');
 	
+
 	}
 
 }

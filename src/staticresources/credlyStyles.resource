@@ -1,6 +1,20 @@
       .pbBody h1 {
         font-size: medium;
         }
+        .smallGreen
+        {
+        font-size: small;
+        font-style: italic;
+		color: green;
+        }
+        
+        .smallBrown
+        {
+        font-size: small;
+        font-style: italic;
+		color: brown;
+        }
+        
          .pbBody h2 {
         font-size: small;
         font-style: italic;
@@ -12,6 +26,26 @@
         .pbBody h1.badgeText
         {
         color:navy;
+        }
+        
+        .uploadFileTextPosition
+        {
+          position: relative;
+         margin-left: -165px;
+         top: 5px;
+        background-color: white;
+         min-width: 200px;
+		height:20px;
+        }
+           
+            .badgeFileTextPosition
+        {
+              position: relative;
+         margin-left: -60px;
+         top: 5px;
+        background-color: white;
+         min-width: 200px;
+		height:20px;
         }
    
    input.description

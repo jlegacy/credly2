@@ -4,6 +4,7 @@
         <members>BadgeContactController</members>
         <members>BadgeTokenController</members>
         <members>CredlyFutureWebCalls</members>
+        <members>CredlyJSON2ApexCategories</members>
         <members>CredlyJSON2ApexUpdateBadge</members>
         <members>CredlyJSONCalls</members>
         <members>CustomBadgeController</members>
@@ -13,12 +14,17 @@
         <members>batchSyncUpdateBadges</members>
         <members>staticCredlyClass</members>
         <members>synchBadgesController</members>
+        <members>testAutomatedBadgeTrigger</members>
+        <members>testAutomatedMemberBadgesTrigger</members>
+        <members>testBadgeTriggers</members>
+        <members>testBatchGetCredlyBadges</members>
         <name>ApexClass</name>
     </types>
     <types>
         <members>Assign_Badges</members>
         <members>SyncBadges</members>
         <members>ViewBadges</members>
+        <members>viewBadgeRules</members>
         <members>viewBadgeToken</members>
         <name>ApexPage</name>
     </types>

@@ -6,7 +6,6 @@ public with sharing class BadgeTokenController {
 	    	
 		token = staticCredlyClass.getToken(); 
 	   }
-	    
 	   public PageReference saveToken()
 	   {
 	    staticCredlyClass.setToken(token); 
