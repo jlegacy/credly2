@@ -93,6 +93,8 @@ public  class testIssueBadges {
         
         controller.step = 0;
         controller.nextStep();
+        controller.xSelectedIDs = ' ';
+        controller.setBadgeSelect = 'test';
         controller.nextStep();
         controller.nextStep();
         controller.nextStep();
@@ -111,7 +113,7 @@ public  class testIssueBadges {
           controller.showUploadOnly();
           controller.xSelectedIDs = null;
           controller.showUploadOnly();
-         controller.xSelectedIDs = 'test';
+         controller.xSelectedIDs = '1,2,3,4';
         controller.showUploadOnly();
         controller.getRecordTypes();
         controller.getSelectedItem();

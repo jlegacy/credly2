@@ -1,5 +1,5 @@
 @isTest(seeAllData=true) 
-public with sharing class testCredlyFutureWeb {
+public with sharing class testCredlyFutureWeb { /*
 	static testMethod void start() {
 	 testRequestHTTPMock fakeResponse = new testRequestHTTPMock(200,
                                                  'Complete',
@@ -19,7 +19,7 @@ public with sharing class testCredlyFutureWeb {
     
         CredlyFutureWebCalls.updateBadge('a01i00000084HQUAA2');
        
-	}
+	}*/
 	
 
 }

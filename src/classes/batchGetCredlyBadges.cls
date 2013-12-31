@@ -32,7 +32,15 @@ global class batchGetCredlyBadges implements
        mail.setPlainTextBody
        ('The batch Apex job processed ' + a.TotalJobItems +
        ' batches with '+ a.NumberOfErrors + ' failures.');
-       Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+       
+       try{
+	Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+	}
+	catch(System.EmailException ex){
+      // This message should be added to the page, 
+      // as an exception is caught
+      system.debug(ex);
+    }
    }
    
     public void getBadges(List<member_badge__c> scope)

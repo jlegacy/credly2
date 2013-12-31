@@ -21,6 +21,14 @@ public with sharing class testBadgesReport {
         
 	}
 	
+		static testMethod void testMethods() 
+	{
+		  ViewMemberBadgeController controller = new ViewMemberBadgeController(); 
+		  controller.refreshScreenController();
+		  controller.getRecordTypes();
+	}
+	
+	
 	static testMethod void testQueries() 
 	{
     

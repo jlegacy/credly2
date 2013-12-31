@@ -24,7 +24,7 @@
        manuallyReloadFields();
       }
       
-      $j("input[type='radio']").click(function()
+      $j("#contentWrapper").delegate("input[type='radio']","click",function()
 		{
 		//alert($j(this).val());
 		var urlString = $j(this).closest('td').next().find('img').attr('src');
@@ -75,6 +75,12 @@
       {
       
       }
+      
+       function setUploadOption(){
+        
+			setUploadController();
+
+            }
       
      function insertDetail()
       {
@@ -431,7 +437,12 @@
           </apex:column>
           
          
-          <apex:column headerValue="Evidence File">
+         
+          
+          <apex:column headerValue="Evidence">
+          <apex:outputLink value="{!o.evidence_url_r__c}">
+          {!o.evidence_url_r__c}
+          </apex:outputLink>
           <apex:outputField value="{!o.evidence_r__c}" />
           </apex:column>
           
@@ -459,11 +470,14 @@
     
      <apex:actionFunction name="deleteBadgeRule" action="{!deleteBadgeRuleController}" onComplete="window.location.href = window.location.href">
     </apex:actionFunction> 
+    
+        <apex:actionFunction name="setUploadController" action="{!setUploadAction}">
+           </apex:actionFunction>
       
     
     <apex:actionFunction name="setBadgeID"  rerender="dummy">
       <apex:param name="firstParam"  assignTo="{!setBadgeSelect }" value="" />
-    </apex:actionFunction>
+    </apex:actionFunction> 
     
      <apex:actionFunction name="setType"  rerender="dummy">
       <apex:param name="firstParam"  assignTo="{!setTypeSelect }" value="" />
@@ -563,12 +577,7 @@
         </apex:pageBlockSectionItem>
       </apex:pageBlockSection>
       
-      <apex:pageBlockSection >
-        <apex:pageBlockSectionItem >
-          <apex:outputLabel value="Testimonial (*Optional)"/> 
-          <apex:inputTextarea value="{!testimonial}" id="testimonial" styleClass="longInputText"/>
-        </apex:pageBlockSectionItem>
-      </apex:pageBlockSection>
+     
       
        
      <apex:pageBlockSection > 
@@ -604,29 +613,52 @@
        
     </apex:pageBlock>
     
-    <apex:pageBlock title="Step 4: Select File Uploads" id="uploadEvidence" rendered="{!renderStep4}">
+    <apex:pageBlock title="Step 4: Include Evidence and Testimonial" id="uploadEvidence" rendered="{!renderStep4}">
       <apex:pageBlockButtons >
           <apex:commandButton styleClass="backStep" value="Back Step" action="{!backStep}"/> 
        <apex:commandButton styleClass="nextStep" value="Continue" action="{!upload}" />
       </apex:pageBlockButtons>
       
-      <apex:pageBlockSection >
-      <apex:pageBlockSectionItem >
-         <apex:outputLabel value="Upload Evidence File" for="file"/>
-    <apex:inputFile value="{!document.body}" filename="{!document.name}" rendered="{!renderStep4}" id="fileEvidence"/>
-      </apex:pageBlockSectionItem>
-       </apex:pageBlockSection>
+  
+      
+     	 <apex:pageBlockSection columns="1">
+     	 
+  		 <apex:outputpanel >
+  		  <br></br><h2>Include Evidence (*Optional)</h2>
+  		   <br></br><apex:outputLabel styleClass="margin-top-10" value="Upload Options"/>
+         <apex:selectList onChange="setUploadOption();" value="{!upload_option}" multiselect="false" size="1">
+            <apex:selectOptions value="{!uploadTypes}"/> 
+            </apex:selectList>
+            </apex:outputpanel>
+  		 
+  		 <apex:outputpanel rendered="{!renderLink}">
+  		 
+  		 <br></br><h3>The link or file you attach will be included with every badge
+  		 issued as evidence of the recipient's achievement.
+        </h3>
+        
+        <br></br><h3>Enter a URL: http://</h3>
+        <apex:inputText styleClass="urlLinkLong" value="{!urlLink}"></apex:inputText> 
+        </apex:outputpanel>
+        
+        <apex:outputpanel rendered="{!renderFile}" >
+        <h3><br></br>
+        <apex:outputLabel for="file"/> 
+        </h3>
+      
+        <apex:inputFile value="{!document.body}" filename="{!document.name}" id="fileEvidence"/>
+       <apex:outputLabel styleClass="smallGreen bold ruleFileNamePos" value="{!uploadedFileName}" rendered="{!hasUploadedFile}"/> 
+      </apex:outputpanel>
+
+     <apex:outputpanel >
+           <br></br><h2>Testimonial (*Optional)</h2>
+          <br></br><apex:inputTextarea value="{!testimonial}" id="testimonial" styleClass="longInputText margin-top-10"/>
+      </apex:outputpanel>
+      
+  		 
+  		 </apex:pageBlockSection>
        
-    <apex:pageBlockSection >
-    <apex:pageBlockSectionItem >
-     <apex:outputLabel value="Name of Currently Uploaded Evidence File"/>
-       <apex:outputLabel value="{!uploadedFileName}"/> 
-    </apex:pageBlockSectionItem>
-    
-    </apex:pageBlockSection>
     </apex:pageBlock>
-    
-   
-    
+ 
   </apex:form>
 </apex:page>

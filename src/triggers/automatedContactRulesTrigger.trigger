@@ -74,7 +74,7 @@ parsedRows = automatedTriggerClass.unparseRules(j.badge_rule_r__c);
                 //will check if each parsed row was equated with success
               
                 for(Id id : foundHitIds.keySet()) {
-                	system.debug(foundHitIds.get(id) + ',' + parsedRows.size());
+                //	system.debug(foundHitIds.get(id) + ',' + parsedRows.size());
                     if (foundHitIds.get(id) == parsedRows.size())
                     {
                         automatedTriggerClass.addMemberBadge(id, j.Id, j.badge_lookup__c, j.account_type_r__c.toLowerCase());

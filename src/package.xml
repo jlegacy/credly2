@@ -8,16 +8,27 @@
         <members>CredlyJSON2ApexUpdateBadge</members>
         <members>CredlyJSONCalls</members>
         <members>CustomBadgeController</members>
+        <members>automatedTriggerClass</members>
         <members>batchGetCredlyBadges</members>
         <members>batchSyncBadges</members>
         <members>batchSyncMemberBadges</members>
-        <members>batchSyncUpdateBadges</members>
+        <members>sendEmail</members>
         <members>staticCredlyClass</members>
         <members>synchBadgesController</members>
         <members>testAutomatedBadgeTrigger</members>
         <members>testAutomatedMemberBadgesTrigger</members>
+        <members>testBadgeRules</members>
         <members>testBadgeTriggers</members>
+        <members>testBadgesReport</members>
         <members>testBatchGetCredlyBadges</members>
+        <members>testBatchSyncBadges</members>
+        <members>testBatchSyncMemberBadges</members>
+        <members>testCredlyFutureWeb</members>
+        <members>testCredlyJSON2Apex</members>
+        <members>testIssueBadges</members>
+        <members>testStaticCredlyClass</members>
+        <members>testSynchBadges</members>
+        <members>viewBadgeRulesController</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -30,6 +41,7 @@
     </types>
     <types>
         <members>automatedBadgesTrigger</members>
+        <members>automatedContactRulesTrigger</members>
         <members>automatedMemberBadgesTrigger</members>
         <name>ApexTrigger</name>
     </types>

@@ -598,12 +598,14 @@ public with sharing class BadgeContactController {
                  
                  memberBadge.issue_date_m__c = system.today();
            insert memberBadge;
+           memberBadgeList.add(memberBadge);
                
              }
                }
                
         
-          
+            //  system.debug(xRecordType);
+            //   system.debug(emailChecked);
            if (emailChecked)
             {
           	for(member_badge__c a : memberBadgeList){
@@ -696,7 +698,7 @@ public with sharing class BadgeContactController {
                 }
 
             }
-            system.debug(getAccount);
+      //      system.debug(getAccount);
             return getAccount;
         }
         set;

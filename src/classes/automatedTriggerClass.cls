@@ -153,7 +153,7 @@ public static void addMemberBadge(id accountID, id ruleID, id badgeID, String ac
         
          badge_rules__c rule = [Select Id, account_type_r__c, badge_lookup__c, badge_rule_r__c,
          evidence_id_r__c, evidence_name_r__c,evidence_r__c, lookup_id_r__c,
-         rule_name_r__c, testimonial_r__c, number_of_badges_issued_r__c,date_last_issued_r__c, send_email_r__c  from badge_rules__c where ID = :ruleID LIMIT 1];
+         rule_name_r__c, testimonial_r__c, number_of_badges_issued_r__c,date_last_issued_r__c, send_email_r__c, evidence_url_r__c  from badge_rules__c where ID = :ruleID LIMIT 1];
         
          Badge__c badge = [Select Id, Name, criteria__c, description__c, document_id__c,
          expires_in__c, image__c,is_giveable__c, short_description__c,
@@ -175,7 +175,7 @@ public static void addMemberBadge(id accountID, id ruleID, id badgeID, String ac
                 
                  memberBadge.evidence_id_m__c = rule.evidence_id_r__c;
                  memberBadge.evidence_name_m__c = rule.evidence_name_r__c;
-                 
+                 memberBadge.evidence_url_m__c = rule.evidence_url_r__c;
                  memberBadge.testimonial_m__c = rule.testimonial_r__c;
                  
                 if (accountType.equals('account'))

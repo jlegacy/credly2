@@ -3,6 +3,9 @@ public with sharing class viewBadgeRulesController {
 	 public badge__c badge{get;set;}
 	public viewBadgeRulesController () {
 		step = 1;
+		urlLink = ' ';
+		renderFile = true;
+		hasUploadedFile = false;
 		
 		  renderStep1 = true;
 		   renderStep2 = false;
@@ -20,7 +23,7 @@ public with sharing class viewBadgeRulesController {
         setRuleText = '';
         setBadgeSelect = '';
         
-        uploadedFileName = '*None';
+        uploadedFileName = '';
         
           emailChecked = true;
          
@@ -53,6 +56,26 @@ public with sharing class viewBadgeRulesController {
        public Boolean renderStep5 {
         get;
         set;
+    }
+    
+    public String upload_option { get; set; }
+    public Boolean renderFile { get; set; }
+    public pageReference setUploadAction()
+    {
+    		renderFile = (upload_option.compareTo('UP') == 0) ? true : false;
+    	    renderLink = (upload_option.compareTo('LN') == 0) ? true : false;
+    	   
+    	    document = null;
+    	    urlLink = ' ';
+    	   
+    	    return null;
+    }
+    
+     public List < SelectOption > getuploadTypes() {
+        List < SelectOption > options = new List < SelectOption > ();
+        options.add(new SelectOption('UP', 'Upload an Evidence File'));
+        options.add(new SelectOption('LN', 'Use an Evidence URL'));
+        return options;
     }
     
       public String customMessage {get; set;}
@@ -153,16 +176,18 @@ public with sharing class viewBadgeRulesController {
     }
     
     public String selectedBadgeValue { get; set; }
+    public Boolean hasUploadedFile { get; set; }
      
     public String setBadgeSelect{ get; set;}
     public String setTypeSelect{ get; set; }
      public String uploadedFileName{get; set;}
     
     public pageReference modify() {
+    
     	
     	setBadgeSelect = xBadgeId;
     	
-        List < badge_rules__c > rule = [select id, account_type_r__c, evidence_id_r__c, evidence_name_r__c, evidence_r__c, lookup_id_r__c, rule_name_r__c, testimonial_r__c, badge_rule_r__c, badge_visual_rule_r__c,send_email_r__c  from badge_rules__c where ID = :xRuleId LIMIT 1];
+        List < badge_rules__c > rule = [select id, account_type_r__c, evidence_id_r__c, evidence_name_r__c, evidence_r__c, lookup_id_r__c, rule_name_r__c, testimonial_r__c, badge_rule_r__c, badge_visual_rule_r__c,send_email_r__c,evidence_url_r__c   from badge_rules__c where ID = :xRuleId LIMIT 1];
         
          List < badge__c > badge = [select id, title__c, credlyBadgeId__c from badge__c where ID = :xBadgeId LIMIT 1];
        
@@ -176,6 +201,18 @@ public with sharing class viewBadgeRulesController {
         ruleParm = x.badge_rule_r__c;
         emailChecked = x.send_email_r__c;
         uploadedFileName = x.evidence_name_r__c; 
+        
+        hasUploadedFile = uploadedFileName.trim().length() == 0 ? false : true;
+        
+        urlLink = x.evidence_url_r__c;
+        
+        if (urlLink != null)
+        {
+        	renderFile = false;
+        	renderLink = true;
+        	
+        	upload_option = 'LN';
+        }
         }
         
        step = 2;
@@ -349,6 +386,10 @@ public with sharing class viewBadgeRulesController {
 
 
     public Boolean renderUpload { get; set; }
+     
+     public Boolean renderLink { get; set; }
+     
+      public String urlLink {get; set;}
 
     public String name { get; set; }
     public String rule { get; set; }
@@ -413,7 +454,9 @@ public Document document {
                     badge_visual_rule_r__c,
                     badge_lookup__r.image__c,
                     number_of_badges_issued_r__c,
-                    date_last_issued_r__c
+                    date_last_issued_r__c,
+                    evidence_url_r__c
+                    
                     from badge_rules__c])); 
             }
             return getRule;
@@ -505,13 +548,14 @@ public Document document {
         
        
          if (document.body == null) {
-             ruleBadge.evidence_id_r__c = null;
-             ruleBadge.evidence_name_r__c = null;
+             ruleBadge.evidence_url_r__c = urlLink;
+            
              }
          else
          {
              ruleBadge.evidence_id_r__c = document.Id;
              ruleBadge.evidence_name_r__c = document.Name;
+             
              }
              
             try {
@@ -527,7 +571,7 @@ public Document document {
             
             if (xRuleId != null)
             {
-            List < badge_rules__c > ruleBadge = [Select id, account_type_r__c, evidence_id_r__c, evidence_name_r__c, evidence_r__c, lookup_id_r__c, rule_name_r__c, testimonial_r__c, badge_rule_r__c, badge_visual_rule_r__c, send_email_r__c, custom_message_r__c,badge_lookup__c from badge_rules__c where Id = : xRuleId LIMIT 1];
+            List < badge_rules__c > ruleBadge = [Select id, account_type_r__c, evidence_id_r__c, evidence_name_r__c, evidence_r__c, lookup_id_r__c, rule_name_r__c, testimonial_r__c, badge_rule_r__c, badge_visual_rule_r__c, send_email_r__c, custom_message_r__c,badge_lookup__c, evidence_url_r__c from badge_rules__c where Id = : xRuleId LIMIT 1];
             for (badge_rules__c i: ruleBadge) {
            
           i.badge_lookup__c = setBadgeSelect;
@@ -543,13 +587,19 @@ public Document document {
         
          if (document.body != null) {
            
-             i.evidence_id_r__c = document.Id;
+             i.evidence_id_r__c = document.ID;
              i.evidence_name_r__c = document.Name;
-             }
-             }
-            
-            
+             i.evidence_url_r__c = '';
+           }
            
+           if (urlLink != null)
+             {
+             i.evidence_url_r__c = urlLink;
+             i.evidence_id_r__c = '';
+             i.evidence_name_r__c = '';
+             }
+             }
+            
         try {
             update ruleBadge;
         } catch (DMLException e) {

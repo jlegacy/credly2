@@ -31,7 +31,15 @@ global class batchSyncBadges implements
        mail.setPlainTextBody
        ('The batch Apex job processed ' + a.TotalJobItems +
        ' batches with '+ a.NumberOfErrors + ' failures.');
-       Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+       
+       try{
+	Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+	}
+	catch(System.EmailException ex){
+      // This message should be added to the page, 
+      // as an exception is caught
+      system.debug(ex);
+    }
    }
    
     public void synchBadge(List<badge__c> scope)
@@ -46,20 +54,33 @@ global class batchSyncBadges implements
   	String xbadgeURL;
   	String securityToken;
   	
+  	    if (test.isRunningTest()) { 
+  	     	securityToken = 'test';
+  	     }
+  	     else
+  	     {
  	securityToken = CredlyJSONCalls.authenticate(CredlyJSONCalls.getURL() + 'authenticate');
+ //	system.debug(securityToken);
+  	     }
      List<badge__c> badgeList = new List<badge__c>();
     for (badge__c badge : scope) {
     // get the image data
      	
      	if (badge.upload_file_id__c == null)
      	{
-     	encodedImage = CredlyJSONCalls.getCredlyImage(badge.document_id__c);	
+     		 if (test.isRunningTest()) { 
+     		 encodedImage = 'test';	
+     		 }
+     		 else
+     		 {
+     		encodedImage = CredlyJSONCalls.getCredlyImage(badge.document_id__c);
+     		 }	
      	}
      	else
      	{
      	encodedImage = CredlyJSONCalls.getDocumentBlob(badge.upload_file_id__c);	
      	}
-     	
+     
         if (encodedImage != null && securityToken != null)
         {
         // Build Credly Badge //
@@ -77,8 +98,15 @@ global class batchSyncBadges implements
         createURL = CredlyJSONCalls.createURLString(mBadge);
         
            //post badge to credly
-         returnData = CredlyJSONCalls.postCredly(CredlyJSONCalls.getURL()+ 'badges', createURL);
-      //   
+           
+             if (test.isRunningTest()) {
+           	returnData = '{"meta": {"status_code": 200,"status": "OK","message": "","more_info": null},"data": 1408}';
+           }
+           else
+           {
+         returnData = CredlyJSONCalls.postCredly(CredlyJSONCalls.getURL()+ 'badges', createURL);  
+           }
+        
           //parseResults
          CredlyJSON2ApexErrors obj = CredlyJSON2ApexErrors.parse(returnData);
      	if (obj.meta.status.compareTo('OK') == 0)

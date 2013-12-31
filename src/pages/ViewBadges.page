@@ -13,11 +13,11 @@
 
               $j(document).ready(function() {
              $j('#my-badge').hide();
-
-             $j(  "input[id*='autocomplete']" ).autocomplete({
-  				source: []
-				});
+            
+             
           });
+          
+       
           
           window.addEventListener("message", function(e) {
     if (e.origin === "https://staging.credly.com" && typeof (data = e.data) === "object") {
@@ -33,7 +33,7 @@
 
         // Remove the badge builder
         passImageParms(data.image, data.packagedData.iconstub,data.packagedData.icon_id )
-        
+                
         $j('#my-badge').hide();
     }
 });
@@ -67,6 +67,10 @@
   			{
   			titles.push(titleData[i].name);
   			});
+  			
+  			    $j(  "input[id*='autocomplete']" ).autocomplete({
+			source: [ "test", "test2", "php", "coldfusion", "javascript", "asp", "ruby" ]
+			});
   			
   			$j(  "input[id*='autocomplete']" ).autocomplete(
   				"option", "source",titles);
@@ -104,6 +108,9 @@
                      setInterval(function() {
                   this.window.location.href = window.location.href}, 3000);
               }
+              
+           
+                 
         </script>
     </head>
     

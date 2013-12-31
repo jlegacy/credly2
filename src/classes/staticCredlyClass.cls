@@ -1,7 +1,7 @@
 public with sharing class staticCredlyClass {
 	
 	
-	public static String convCRDateTime(String x)
+	/*public static String convCRDateTime(String x)
 	{
 		
 		String[] dateString = x.split(' ');
@@ -65,7 +65,7 @@ public with sharing class staticCredlyClass {
 		system.debug(stringDate);
 		return stringDate;
 		
-	}
+	} */
 	static public String getToken()
 	{
 		String token = null;

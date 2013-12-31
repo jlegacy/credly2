@@ -65,11 +65,11 @@ public with sharing class CredlyJSONCalls {
          HttpRequest req = new HttpRequest();
          req.setEndpoint(url);
          req.setMethod('GET');
-         system.debug(req);
+       //  system.debug(req);
          req.setHeader('Connection', 'close'); 
          req.setTimeout(2000);
          HttpResponse res = h.send(req); 
-         system.debug(res.getbody());
+       //  system.debug(res.getbody());
          blob image = (res.getBodyAsBlob());
     
         Attachment attach = new Attachment();
@@ -84,7 +84,7 @@ public with sharing class CredlyJSONCalls {
         Document doc = [select id, name, body, contenttype, developername, type 
       	from Document where id = :documentId];
         encodedImage = EncodingUtil.base64Encode(doc.body);
-        system.debug(encodedImage);
+    //    system.debug(encodedImage);
         return encodedImage; 
     }
    

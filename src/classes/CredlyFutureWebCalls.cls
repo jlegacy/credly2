@@ -1,4 +1,4 @@
-public with sharing class CredlyFutureWebCalls {
+public with sharing class CredlyFutureWebCalls { /*
 @future  (callout=true)
 public static void updateBadge(ID badgeId) 
 {
@@ -63,6 +63,5 @@ public static void updateMemberBadge(ID badgeId)
            //post badge to credly
          returnData = CredlyJSONCalls.postCredly(CredlyJSONCalls.getURL()+ 'member_badges/' + memberBadge.credlyMemberBadge_id_m__c, createURL);     
           //parseResults
-         CredlyJSON2ApexErrors obj = CredlyJSON2ApexErrors.parse(returnData);
-}
+         CredlyJSON2ApexErrors obj = CredlyJSON2ApexErrors.parse(returnData);*/
 }

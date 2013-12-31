@@ -72,13 +72,28 @@ if (emailType == 'contact')
 {
 recipientContact = [SELECT id FROM Contact  where ID = :whoId LIMIT 1];
 mail.setTargetObjectId(recipientContact.id);
-Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});	
+try{
+	//system.debug('attempting email');
+	Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+	}
+	catch(System.EmailException ex){
+      // This message should be added to the page, 
+      // as an exception is caught
+      system.debug(ex);
+    }
 }
 if (emailType == 'lead')
 {
 recipientLead = [SELECT id FROM Lead  where ID = :whoId LIMIT 1];
 mail.setTargetObjectId(recipientLead.id);	
-Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+try{
+	Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+	}
+	catch(System.EmailException ex){
+      // This message should be added to the page, 
+      // as an exception is caught
+      system.debug(ex);
+    }
 }
 if (emailType == 'account')
 {
@@ -86,11 +101,18 @@ Id accountId; // Fill in the accountId you want
 List<Contact> contacts = new List<Contact>([SELECT Id, email FROM Contact WHERE AccountId = :whoId]);
 for(Contact a : contacts){
 	mail.setTargetObjectId(a.id);	
+	try{
 	Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+	}
+	catch(System.EmailException ex){
+      // This message should be added to the page, 
+      // as an exception is caught
+      system.debug(ex);
+    }
+		
+	}
 }
 
 }
 
      }
-
-}

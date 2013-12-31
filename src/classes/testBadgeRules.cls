@@ -12,7 +12,7 @@ static testMethod void testController()
         controller.criteria = 'test';
         controller.expires_in = '99999';
         controller.getRuleField1 = 'test'; 
-	}
+	}  
 	
 static testMethod void testMethods() 
 	{
@@ -25,16 +25,31 @@ static testMethod void testMethods()
         controller.setVisibleStep(4);
         controller.setVisibleStep(5);
         
+        controller.step = 0;
         controller.nextStep();
+        
+       controller.step = 1;
         controller.nextStep();
+        
+       controller.step = 2;
+        controller.nextStep();
+        
+        controller.step = 3;
+        controller.name = ' ';
+        controller.nextStep();
+        
+         controller.step = 3;
+        controller.setRuleText = ' ';
+        controller.nextStep();
+        
         controller.nextStep();
         controller.nextStep();
         controller.nextStep();
         
         controller.backStep();
         
-        controller.xBadgeId = 'a03i0000007NmtgAAC';
-        controller.xRuleId = 'a03i0000007NmtgAAC';
+        controller.xBadgeId = 'a01i00000084HSBAA2';
+        controller.xRuleId = 'a03i0000008TGGAAA4';
         controller.modify();
         controller.deleteBadgeRuleController();
         controller.reloadFields();
@@ -67,7 +82,7 @@ static testMethod void testMethods()
          controller.getFields('contact');
         
         controller.setRuleText = 'Languages__c:STRING|eq|spanish~IsDeleted:BOOLEAN|eq|false';
-        controller.setBadgeSelect = 'a03i0000007NmtgAAC';
+        controller.setBadgeSelect = 'a01i00000084HSBAA2';
         
           controller.name = 'testing';
     
@@ -76,12 +91,13 @@ static testMethod void testMethods()
         controller.populateRecordType = 'contact';
          controller.customMessage = 'testing';
 
-
- 			controller.xRuleId = 'a03i0000007NmtgAAC';  
+			controller.xRuleId = null;  
+ 			controller.upload();
+ 			
+ 			controller.xRuleId = 'a03i0000008TGGAAA4';  
  			controller.upload();   
  			
- 			controller.xRuleId = '';  
- 			controller.upload(); 
+ 			 
  			
  			controller.getPopulateRecordType();
  			controller.setRuleEmpty();
@@ -90,8 +106,11 @@ static testMethod void testMethods()
  			controller.setTestimonialEmpty();
  			controller.setBadgeIdEmpty();
  			controller.renderPage();
- 						     
-        
+ 			
+ 			controller.setUploadAction();
+ 			controller.getUploadTypes();
+ 			controller.setPopulateRecordType('test');
+ 							   
 	}
 
 

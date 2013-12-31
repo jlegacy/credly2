@@ -107,6 +107,9 @@
     color:gray;
     }
    
+   	  .urlLinkLong{
+   	  width:800px;
+   	  }
       .longInputText{ 
             width: 200px;
             height: 100px;
@@ -160,6 +163,10 @@
       
       text-align:left;
       color:red;
+    }
+    .bold
+    {
+    font-weight:bold;
     }
     .input
     {
@@ -220,12 +227,12 @@ margin-top: -3px;
     .spinImage{
     position: absolute;
     margin-top: -10px;
-    margin-left: 45px;
+    margin-left: 50px;
     }
      .spinMessage{
     position: absolute;
     margin-top: -21px;
-    margin-left: 115px;
+    margin-left: 121px;
     }
     
    .print table {
@@ -241,6 +248,23 @@ margin-top: -3px;
     height:75px;
     width:75px;
     border-color: white !important;
+    }
+    
+    .margin-top-10{
+    margin-top:10px
+    }
+    
+    .ruleFileNamePos{
+     position: absolute;
+    margin-left: -155px;
+	background-color:white;
+	min-width: 200px;
+	height:30px;
+	margin-top:5px;
+    {
+    
+    .narrowColumn{
+    width:150px !important;
     }
     
  
