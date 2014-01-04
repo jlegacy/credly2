@@ -1,13 +1,13 @@
 @isTest(seeAllData=true)
 public with sharing class testCredlyJSON2Apex {
-	
+	 
 	static testMethod void testCredlyJSON2ApexBadge() 
 	{
 	     CredlyJSON2ApexBadge controller = new CredlyJSON2ApexBadge(); 
 	     CredlyJSON2ApexBadge.Meta testMeta = new CredlyJSON2ApexBadge.Meta();
 	     testMeta.message = 'test';
 	     testMeta.status = 'test';
-	     testMeta.status_code = 1;
+	     testMeta.status_code = 1; 
 	     CredlyJSON2ApexBadge.parse('{"meta":{"status_code":200,"status":"OK","message":"","more_info":null},"data":1412}');
 	     
 	}

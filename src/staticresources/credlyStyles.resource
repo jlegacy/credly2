@@ -1,6 +1,17 @@
       .pbBody h1 {
         font-size: medium;
         }
+        
+        .required
+        {
+        color: red;
+        }
+        
+        .requiredPosition{
+            margin-left: 100px;
+    		margin-top: 13px;
+    		position: absolute;
+        }
         .smallGreen
         {
         font-size: small;
@@ -19,6 +30,19 @@
         font-size: small;
         font-style: italic;
 		color: green;
+        }
+        
+          .pbBody h2.required {
+		color: red;
+        }
+        
+        .successMessage
+        {
+          font-style:italic;
+            font-size:16px; 
+            font-weight:normal; 
+            text-align:left;
+            color:green;
         }
         .pbBody h3 {
         font-size: x-small;

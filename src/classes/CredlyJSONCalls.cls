@@ -25,25 +25,30 @@ public with sharing class CredlyJSONCalls {
      
    public static String getURL()
    {
-    String URL = 'https://apistaging.credly.com/v0.2/';
+    String URL = 'https://api.credly.com/v1.1/';
     return URL;
    }
    
    public static String authenticate(String URL) {
     // Instantiate a new http object
+    staticCredlyClass.Token j = staticCredlyClass.getToken();
+    
     Http h = new Http();
-   String authorizationHeader = 'Basic ' + staticCredlyClass.getToken();
-
+    
+   String authorizationHeader = 'Basic ' + j.authKey;
+ 
 // Instantiate a new HTTP request, specify the method (GET) as well as the endpoint
     HttpRequest req = new HttpRequest();
     req.setEndpoint(url);
     req.setMethod('POST');
     
      req.setHeader('Authorization', authorizationHeader);
+      req.setHeader('X-Api-Key', j.APIkey);
+       req.setHeader('X-Api-Secret', j.APIsecret);
     
 // Send the request, and return a response
     HttpResponse res = h.send(req); 
-    
+ 
        //parseResults
          CredlyJSON2ApexErrors obj = CredlyJSON2ApexErrors.parse(res.getBody());
        
@@ -124,5 +129,4 @@ public with sharing class CredlyJSONCalls {
     return res.getBody(); 
    }
  
-
 }

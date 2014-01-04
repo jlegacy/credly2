@@ -66,35 +66,46 @@ public with sharing class staticCredlyClass {
 		return stringDate;
 		
 	} */
-	static public String getToken()
+	
+	public with sharing class Token {
+		public String authKey;
+		public String APIkey;
+		public String APIsecret;
+	}
+	
+	static public Token getToken()
 	{
-		String token = null;
-		token_data__c[] myToken = [SELECT user_name_t__c, token_data_t__c FROM token_data__c WHERE user_name_t__c = :UserInfo.getUserId()];
+		Token token = new Token(); 
+	
+		token_data__c[] myToken = [SELECT user_name_t__c, authKey_data_t__c, apiKey_data_t__c, apiSecret_data_t__c FROM token_data__c WHERE user_name_t__c = :UserInfo.getUserId()];
 	    for (token_data__c a : myToken)
 	    {
-		token = a.token_data_t__c;
+	
+		token.authKey = a.authKey_data_t__c;
+		token.APIsecret = a.apiSecret_data_t__c;
+		token.APIkey = a.apiKey_data_t__c;
+	
 	    }
 	     
 	    return token;
 	   }
-	static public void setToken(String x)
+	static public void setToken(Token passedToken)
 	{
+	    system.debug(passedToken);
 	    //delete token
-	    token_data__c[] myToken = [SELECT user_name_t__c, token_data_t__c FROM token_data__c WHERE user_name_t__c = :UserInfo.getUserId()];
+	    token_data__c[] myToken = [SELECT user_name_t__c, authKey_data_t__c FROM token_data__c WHERE user_name_t__c = :UserInfo.getUserId()];
 	    try{
 	    delete myToken;
 	    	} catch (DmlException e) {
     // Process exception here
 			}
 	    
-	    
 	    //create new one
-	    token_data__c newToken = new token_data__c(user_name_t__c = UserInfo.getUserId(), token_data_t__c = x);
-		myToken.add(newToken);
-	 
+	    token_data__c newToken = new token_data__c(user_name_t__c = UserInfo.getUserId(), authKey_data_t__c = passedToken.authKey, apiKey_data_t__c = passedToken.APIkey, APIsecret_data_t__c = passedToken.APIsecret);
 		try {
-    		insert myToken;
+    		insert newToken;
 			} catch (DmlException e) {
+						
     // Process exception here
 			}
 	   	 
