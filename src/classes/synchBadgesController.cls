@@ -13,7 +13,7 @@ public PageReference synchBadges() {
        
     //Pull any badges from Credly missing in Salesforce   
         batchGetCredlyBadges c = new batchGetCredlyBadges();
-        Database.executeBatch(c);
+        Database.executeBatch(c, 1);
         
         return null;    
      }

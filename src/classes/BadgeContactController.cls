@@ -2,6 +2,7 @@ public with sharing class BadgeContactController {
     
       public BadgeContactController() { 
 
+		getOnce = true;
         renderStep1 = true;
         renderStep2 = false;
         renderStep3 = false;
@@ -24,7 +25,9 @@ public with sharing class BadgeContactController {
          securityToken = CredlyJSONCalls.authenticate(CredlyJSONCalls.getURL() + 'authenticate');   
     }
     
+    public List < badge__c > badgeList {get;set;}
      public String securityToken {get; set;}
+     public Boolean getOnce {get; set;}
     
     public Boolean emailChecked {get; set;}
      public Boolean customMessageChecked {get; set;}
@@ -442,7 +445,7 @@ public with sharing class BadgeContactController {
 
 
     public List < SelectOption > getDropBadges() {
-
+		system.debug('drop badges');
         List < badge__c > newBadges = getBadges();
 
 
@@ -732,8 +735,13 @@ public with sharing class BadgeContactController {
     }
 
     // Initialize getBadge and return a list of records
+    
     public List < badge__c > getBadges() {
-       return (List < badge__c > ) getBadge.getRecords();
+    	if (badgeList == null)
+    	{
+    		badgeList = getBadge.getRecords();
+    	}
+    	return badgeList;
     }
 
 

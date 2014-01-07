@@ -76,7 +76,11 @@ global class batchSyncMemberBadges implements
         
         if (memberBadge.evidence_url_m__c != null)
         {
-        evidenceImage = CredlyJSONCalls.getCredlyImage(memberBadge.evidence_url_m__c );	
+        evidenceImage = CredlyJSONCalls.getCredlyImage(memberBadge.evidence_url_m__c );
+       if (evidenceImage == null)	
+       	{   
+        	evidenceImage = EncodingUtil.Base64Encode( Blob.valueOf( memberBadge.evidence_url_m__c ) );
+        }
         }
         
         if (securityToken != null)
@@ -139,7 +143,6 @@ global class batchSyncMemberBadges implements
       //   
           //parseResults
          CredlyJSON2ApexErrors obj = CredlyJSON2ApexErrors.parse(returnData);
-        system.debug(returnData);
         if (obj.meta.status.compareTo('OK') == 0)
             {
              CredlyJSON2ApexMemberBadge obj2 = CredlyJSON2ApexMemberBadge.parse(returnData);

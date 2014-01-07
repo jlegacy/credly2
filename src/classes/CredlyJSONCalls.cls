@@ -70,18 +70,23 @@ public with sharing class CredlyJSONCalls {
          HttpRequest req = new HttpRequest();
          req.setEndpoint(url);
          req.setMethod('GET');
-       //  system.debug(req);
+      
          req.setHeader('Connection', 'close'); 
          req.setTimeout(2000);
-         HttpResponse res = h.send(req); 
-       //  system.debug(res.getbody());
-         blob image = (res.getBodyAsBlob());
-    
-        Attachment attach = new Attachment();
-        attach.body = image;
-        encodedImage = EncodingUtil.base64Encode(attach.body);
-        return encodedImage;
-        
+         try
+           {
+           	HttpResponse res = h.send(req);
+            blob image = (res.getBodyAsBlob());
+        	Attachment attach = new Attachment();
+        	attach.body = image;
+        	encodedImage = EncodingUtil.base64Encode(attach.body);
+        	return encodedImage;
+           }
+           catch(Exception e)
+           {
+           	return null;
+           }
+
     }
     
      public static String getDocumentBlob(String documentId) {
@@ -97,8 +102,10 @@ public with sharing class CredlyJSONCalls {
     // Instantiate a new http object
     Http h = new Http();
     
-    String authorizationHeader = 'Basic ' + staticCredlyClass.getToken();
-
+    staticCredlyClass.Token j = staticCredlyClass.getToken();
+    
+    String authorizationHeader = 'Basic ' + j.authKey;
+    
 // Instantiate a new HTTP request, specify the method (GET) as well as the endpoint
     HttpRequest req = new HttpRequest();
     
@@ -108,8 +115,9 @@ public with sharing class CredlyJSONCalls {
     req.setBody(dataURL);
     
     req.setHeader('Authorization', authorizationHeader);
-//    req.setCompressed(true); // otherwise we hit a limit of 32000
-    
+      req.setHeader('X-Api-Key', j.APIkey);
+       req.setHeader('X-Api-Secret', j.APIsecret);
+  
 // Send the request, and return a response
     HttpResponse res = h.send(req); 
     return res.getBody();
@@ -118,14 +126,21 @@ public with sharing class CredlyJSONCalls {
    public static String getCredly(String URL) {
     // Instantiate a new http object
     Http h = new Http();
-
+  
+    staticCredlyClass.Token j = staticCredlyClass.getToken();
+      
 // Instantiate a new HTTP request, specify the method (GET) as well as the endpoint
     HttpRequest req = new HttpRequest();
+      req.setTimeout(15000);
+    req.setHeader('X-Api-Key', j.APIkey);
+    req.setHeader('X-Api-Secret', j.APIsecret);
+   
     req.setEndpoint(url);
     req.setMethod('GET');
 
 // Send the request, and return a response
     HttpResponse res = h.send(req);
+    system.debug(res.getBody());
     return res.getBody(); 
    }
  
